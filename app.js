@@ -1,7 +1,14 @@
 const request = require('request')
 const chalk = require('chalk')
+const geocode = require('./utils/geocode')
 
-// const url = "https://api.darksky.net/forecast/3a86fdc7e15ad649157a33abfee09437/37.8267,-122.4233?units=si&lang=de"
+
+geocode('Philadelphia', (error, data) => { 
+    console.log('Error: ', error)
+    console.log('Data: ', data)
+})
+
+    // const url = "https://api.darksky.net/forecast/3a86fdc7e15ad649157a33abfee09437/37.8267,-122.4233?units=si&lang=de"
 
 //argument 1: options object outlines what we want to do
 //argument 2: function to run once the data is available
@@ -29,27 +36,3 @@ const chalk = require('chalk')
 //     }
 // })
 
-const geocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1Ijoiam95Y2VwZXJleiIsImEiOiJjanV1eW14OXAwZWg4NDlueTZwcTZvOGduIn0.0YdkKZKKRKrcazOQlBWJvg&limit=1"
-// const geocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/12what.json?access_token=pk.eyJ1Ijoiam95Y2VwZXJleiIsImEiOiJjanV1eW14OXAwZWg4NDlueTZwcTZvOGduIn0.0YdkKZKKRKrcazOQlBWJvg&limit=1"
-
-request({ url : geocodeURL, json: true}, (error, response) => {
-
-    if(error){
-        console.log(chalk.red.inverse("Unable to connect!"))
-    } else if (response.body.features.length === 0) {
-        console.log(chalk.blue.inverse("No matching result!"))
-    } else {
-        // console.log(response.body.features.length) // 0
-        const long = response.body.features[0].center[0]
-        const lat = response.body.features[0].center[1]
-        const searchKey = response.body.query
-        const place = searchKey.join().replace(",", " ")
-        console.log("The longitude and latitude of " 
-            + place 
-            + " is " 
-            + long 
-            + " and " 
-            + lat 
-            + ", respectively.")
-    }
-})
